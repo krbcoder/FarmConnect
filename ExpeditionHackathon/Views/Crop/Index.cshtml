@@ -170,6 +170,7 @@
                 vm.$scope = $scope;
                 vm.prepData = _prepData;
                 vm.setCropName = _setCropName;
+                vm.prepMapData = _prepMapData;
 
 
                 coldroom.page.cropId = @Model.Item1;
@@ -203,7 +204,148 @@
                             value: "0.961684"
                         }]
                     }
+                    vm.mapObj = {
+                        chart: {
+                            "caption": "Crop yields",
+                            "theme": "zune",
+                            "formatNumberScale": "0",
+                            "numberSuffix": "M"
+                        },
+                        colorrange: {
+                            "color": [
+                                {
+                                    "minvalue": "0",
+                                    "maxvalue": "1",
+                                    "code": "#99ff99",
+                                    "displayValue": "< 100M"
+                                },
+                                {
+                                    "minvalue": "1",
+                                    "maxvalue": "1.3",
+                                    "code": "#66ff66",
+                                    "displayValue": "100-500M"
+                                },
+                                {
+                                    "minvalue": "1.3",
+                                    "maxvalue": "1.7",
+                                    "code": "#33cc33",
+                                    "displayValue": "500M-1B"
+                                },
+                                {
+                                    "minvalue": "1.7",
+                                    "maxvalue": "4",
+                                    "code": "#009933",
+                                    "displayValue": "> 1B"
+                                },
+                                 {
+                                     "minvalue": "4",
+                                     "maxvalue": "5",
+                                     "code": "#003300",
+                                     "displayValue": "> 1B"
+                                 }
 
+                            ]
+                        },
+                        data: [
+                             {
+                                 "id": "MA.CO",
+                                 "value": "10",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.DA",
+                                 "value": "20",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6502"
+                             },
+                             {
+                                 "id": "MA.FB",
+                                 "value": "215",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.GB",
+                                 "value": "3105",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6502"
+                             },
+                             {
+                                 "id": "MA.GC",
+                                 "value": "415",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.GE",
+                                 "value": "515",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6001"
+                             },
+                             {
+                                 "id": "MA.LB",
+                                 "value": "5015",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6001"
+                             },
+                             {
+                                 "id": "MA.MK",
+                                 "value": "30",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.MT",
+                                 "value": "715",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.OR",
+                                 "value": "8015",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6002"
+                             },
+                             {
+                                 "id": "MA.OL",
+                                 "value": "40",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6001"
+                             },
+                             {
+                                 "id": "MA.RZ",
+                                 "value": "815",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6202"
+                             },
+                             {
+                                 "id": "MA.SM",
+                                 "value": "715",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6002"
+                             },
+                             {
+                                 "id": "MA.TD",
+                                 "value": "615",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6102"
+                             },
+                             {
+                                 "id": "MA.TO",
+                                 "value": "415",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6502"
+                             },
+                             {
+                                 "id": "MA.TH",
+                                 "value": "50",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6502"
+                             },
+                        ]
+
+                    }
 
 
                     coldroom.services.weatherStationCrops.getYield(coldroom.page.stationId, coldroom.page.cropId, _onGetYieldSuccess, _onGetYieldError);
@@ -255,6 +397,202 @@
                     return obj;
                 }
 
+
+                function _prepMapData (myData, otherData){
+
+                    otherData.push(myData);
+
+                    var farmDataArray = otherData
+
+                    var mapGraphObj = {
+                        "chart": {
+                            "caption": "Crop yields",
+                            "theme": "zune",
+                            "formatNumberScale": "0",
+                            "numberSuffix": "M"
+                        },
+                        "colorrange": {
+                            "color": [
+                                {
+                                    "minvalue": "0",
+                                    "maxvalue": "0",
+                                    "code": "#e6e6ff",
+                                    "displayValue": "0"
+                                },
+                                {
+                                    "minvalue": "0",
+                                    "maxvalue": "0.3",
+                                    "code": "#99ccff",
+                                    "displayValue": "0-0.3"
+                                },
+                                {
+                                    "minvalue": "0.3",
+                                    "maxvalue": "0.6",
+                                    "code": "#6699ff",
+                                    "displayValue": "0.3-0.6"
+                                },
+                                {
+                                    "minvalue": "0.6",
+                                    "maxvalue": "0.9",
+                                    "code": "#9966ff",
+                                    "displayValue": "0.6-0.9"
+                                },
+                                {
+                                    "minvalue": "0.9",
+                                    "maxvalue": "1.2",
+                                    "code": "#00cc66",
+                                    "displayValue": "0.9-1.2"
+                                },
+                                 {
+                                     "minvalue": "1.2",
+                                     "maxvalue": "1.5",
+                                     "code": "#ffff00",
+                                     "displayValue": "1.2-1.5"
+                                 },
+                                  {
+                                      "minvalue": "1.5",
+                                      "maxvalue": "2",
+                                      "code": "#ff9933",
+                                      "displayValue": "1.5-2"
+                                  },
+                                  {
+                                      "minvalue": "2",
+                                      "maxvalue": "3",
+                                      "code": "#ff0000",
+                                      "displayValue": "2-3"
+                                  },
+                                 {
+                                     "minvalue": "3",
+                                     "maxvalue": "4",
+                                     "code": "#660000",
+                                     "displayValue": "2-3"
+                                 },
+                                  {
+                                      "minvalue": "4",
+                                      "maxvalue": "5",
+                                      "code": "#660000",
+                                      "displayValue": "4-5"
+                                  }
+
+                            ]
+                        },
+                        "data": [
+                             {
+                                 "id": "MA.CO",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "7"
+                             },
+                             {
+                                 "id": "MA.DA",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "8"
+                             },
+                             {
+                                 "id": "MA.FB",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "3"
+                             },
+                             {
+                                 "id": "MA.GB",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "5"
+                             },
+                             {
+                                 "id": "MA.GC",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "7"
+                             },
+                             {
+                                 "id": "MA.GE",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "1"
+                             },
+                             {
+                                 "id": "MA.LB",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "1"
+                             },
+                             {
+                                 "id": "MA.MK",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "4"
+                             },
+                             {
+                                 "id": "MA.MT",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "3"
+                             },
+                             {
+                                 "id": "MA.OR",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6"
+                             },
+                             {
+                                 "id": "MA.OL",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "1"
+                             },
+                             {
+                                 "id": "MA.RZ",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "3"
+                             },
+                             {
+                                 "id": "MA.SM",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "1"
+                             },
+                             {
+                                 "id": "MA.TD",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "2"
+                             },
+                             {
+                                 "id": "MA.TO",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "9"
+                             },
+                             {
+                                 "id": "MA.TH",
+                                 "value": "0",
+                                 "displayValue": "Moderate",
+                                 "stationId": "6"
+                             },
+                        ]
+
+                    };
+                    console.log(mapGraphObj.data);
+
+                   // var mapDataArray = mapGraphObj.data;
+
+                    for(var i = 0; i < farmDataArray.length; i++){
+
+                        for (var k = 0; k < mapGraphObj.data.length; k++){
+                            if(farmDataArray[i].WeatherStationId == mapGraphObj.data[k].stationId){
+                                mapGraphObj.data[k].value = farmDataArray[i].Yield;
+                            }
+                        }
+
+                    }
+
+                    return mapGraphObj;
+                }
+
                 function _onGetYieldSuccess(data){
 
                     vm.$log.debug("my yields: ", data);
@@ -279,8 +617,10 @@
 
                         vm.graphData = vm.prepData(vm.myYield, vm.otherYields);
                         vm.$log.debug("graphData: ", vm.graphData);
-
                         vm.barGraph = vm.graphData;
+
+                        vm.mapGraphData = vm.prepMapData(vm.myYield, vm.otherYields);
+                        vm.mapGraph = vm.mapGraphData;
 
                     });
 
