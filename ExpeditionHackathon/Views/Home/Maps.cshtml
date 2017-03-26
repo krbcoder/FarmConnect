@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+                     * element that contains the map. */
+        #map {
+            height: 400px;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 400px;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+
+<h2>Index</h2>
+
+<div id="map"></div>
+
+<form class="locationForm">
+    <div class="form-group">
+        <label for="latInput">Latitude</label>
+        <input type="text" class="form-control" id="latInput" placeholder="31.397687" value="31.397687">
+    </div>
+    <div class="form-group">
+        <label for="lngInput">Longitude</label>
+        <input type="text" class="form-control" id="lngInput" placeholder="-5.775109" value="-5.775109">
+    </div>
+    <button type="submit" id="btnSubmitLoc" class="btn btn-default">Submit</button>
+</form>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            console.log("ready!");
+            initMap();
+            $("#btnSubmitLoc").on("click", findClosestWeatherStation);
+        });
+
+        /*
+        Haversine Formula
+        */
+        function rad(x) { return x * Math.PI / 180; }
+
+        var findClosestWeatherStation = function () {
+            var lat = $("#latInput").val();
+            var lng = $("#lngInput").val();
+            var latLng = new google.maps.LatLng(lat, lng);
+
+            var R = 6371; // radius of earth in km
+            var distances = [];
+            var closest = -1;
+            for (i = 0; i < stationMarkersArray.length; i++) {
+                var mlat = stationMarkersArray[i].position.lat();
+                var mlng = stationMarkersArray[i].position.lng();
+                var dLat = rad(mlat - lat);
+                var dLong = rad(mlng - lng);
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c;
+                distances[i] = d;
+                if (closest == -1 || d < distances[closest]) {
+                    closest = i;
+                }
+            }
+
+            alert(stationMarkersArray[closest].title);
+        };
+
+
+
+</script>
+
+    <script src="~/Scripts/maps.js"></script>
+    <script @*async defer*@
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0YQzZkHg2_uFxrgbWh4En4D1UmDjHxho&callback=initMap">
+    </script>
+
+}

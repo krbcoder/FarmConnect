@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="~/assets/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="~/assets/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="~/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .contactForm {
+            padding-top: 70px;
+            margin-left:20px;
+        }
+
+    </style>
+</head>
+
+<div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">Connect with a Farmer <i class="glyphicon glyphicon-send"></i></h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div>
+        <div class="row" ng-controller="userController as UCtrl">
+            <div class="col-lg-8 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <strong>Contact</strong>
+                    </div>
+                    <div style="padding: 30px!important" class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-5 col-xs-6 contactForm">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input style="margin-right: 10px!important" class="form-control" placeholder="Enter your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input style="margin-right: 10px!important" class="form-control" placeholder="Enter your email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Subject</label>
+                                        <input style="margin-right: 10px!important" class="form-control" placeholder="Enter the subject of your message">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Message</label>
+                                        <textarea style="margin-right: 10px!important" class="form-control" rows="3" placeholder="Enter the body of your message"></textarea>
+                                    </div>
+                                    <button style="margin-top: 40px" type="button" class="btn btn-success btn-lg" ng-click="UCtrl.send()"><i class="fa fa-check"></i> Submit</button>
+                                </form>
+                            </div>
+                            <div class="col-lg-6 col-xs-6 contactForm">
+                                <img width="415px" style="margin-bottom: 20px" src="~/Content/farmerimage.png" />
+                                <br />
+                                <p style="text-align: justify">
+                                    Salamu alaykum.
+                                    My name is younes and my cuisine lahssen and our family lives in a small village named Tagounite located South of Zagora.
+                                    Our family has a home and farming land in a historic village which is called a casbah. We are building a garden in the casbah near my village and we would like to welcome volunteers from all over the world to exchange ideas about our berber culture and way of life and of course learn about you and where you come from.
+                                    The casbah is located in the desert and surrounded by palm trees and other kinds of vegetation.
+                                    We get very little rain but we provide water to our garden with a well we recently made.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="~/assets/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="~/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="~/assets/vendor/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="~/assets/dist/js/sb-admin-2.js"></script>
+
+@section scripts{
+    
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script src="~/Scripts/coldRoom.services.user.js"></script>
+<link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
+<link href="~/assets/dist/css/sweetalert.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+
+        (function () {
+            "use strict";
+            angular.module("app").factory("userService", UserServiceFactory);
+            function UserServiceFactory() {
+                var aUserServiceObject = coldroom.services.user;
+                console.log("User Service created successfully");
+                return aUserServiceObject;
+            }
+        })();
+
+        
+        (function () {
+            "use strict";
+            angular.module("app").controller('userController', UserController);
+            UserController.$inject = ['$scope', 'userService'];
+            function UserController($scope, userService) {
+                var vm = this;
+                vm.$scope = $scope;
+                vm.userService = userService;
+                vm.items = [];
+                vm.send = _send;
+
+                function _send() {
+                    swal("Sent!", "You have a new connection!", "success")
+                }
+            }
+
+        })();
+
+
+
+
+
+
+
+
+    </script>
+    
+    
+    }

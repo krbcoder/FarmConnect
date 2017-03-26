@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr") 
+    @RenderSection("styles", required: false)
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet" />
+
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+<body ng-app="app" style="padding-top: 0px" ng-cloak>
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; background-image: url(http://hdwallpaperdaily.com/wp-content/uploads/2014/08/green-farmland-patches-wallpaper.jpg)">
+            <div class="navbar-header">
+                
+                <a class="navbar-brand" href="/" style="color:white; font-size: 20px; font-family: Helvetica; font-weight:bolder">Farm Connect</a>
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/coldroom.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.js"></script>
+    <script src="~/fusionCharts/js/angular-fusioncharts.min.js"></script>
+    <script src="~/Scripts/coldroom.services.climateZones.js"></script>
+
+    <script>
+        angular.module("app", ["ng-fusioncharts"]);
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

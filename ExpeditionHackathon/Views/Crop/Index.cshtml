@@ -1,0 +1,474 @@
+﻿@model ExpeditionHackathon.Models.ViewModels.ItemViewModel<int, int, int>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@section styles{
+
+
+    <title></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="~/assets/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="~/assets/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <link href="~/assets/vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="~/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+
+}
+
+<style>
+    .graphBox {
+        box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.40), 0 11px 25px 0 rgba(0, 0, 0, 0.45);
+        margin: 10px;
+    }
+</style>
+
+<div ng-controller="cropController as crop">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header text-center"><strong>{{crop.cropName}} in similar agricultural zones </strong><i class="fa fa-bar-chart-o"></i></h1>
+                <div class="row">
+                    <div class="col-lg-6 graphBox">
+                        <pre class="hidden">
+{{crop.barGraph | json}}
+</pre>
+                        <div fusioncharts width="600" height="400" type="bar2d" dataSource="{{crop.barGraph}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div fusioncharts width="600" height="400" type="maps/morocco" dataSource="{{crop.mapGraph}}">
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                    <!--graph here-->
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row text-center">
+                    <h1 class="page-header"><strong>Farmers in Region <i style="font-size:1em;" class="fa fa-users"></i></strong></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+                <div class="panel panel-default" ng-controller="userController as UCtrl">
+                    <div class="panel-heading">
+
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Description</th>
+                                        <th>Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in UCtrl.items">
+                                        <td>{{user.Name}}</td>
+                                        <td>{{user.LocationName}}</td>
+                                        <td>{{user.Description}}</td>
+                                        <td><a href="~/home/contact" class="btn btn-primary">Contact</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                @*<!-- /.panel -->
+                    <div class="panel panel-default" ng-controller="userController as UCtrl">
+                        <div class="panel-heading">
+                            Hover Rows
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body container" ng-repeat="user in UCtrl.items">
+                            <div class="row">
+                                <div class="col-lg-4 col-xs-10">
+                                    <img href="https://room.rakuten.co.jp/img/img_noprofile_temporary_member.gif?thum=111&resize=40:*" />
+                                </div>
+                                <div class="col-lg-8 col-xs-10">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div>
+                                                <h3>{{user.Name}} - {{user.LocationName}}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div>
+                                                <p>{{user.Description}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script src="~/Scripts/coldRoom.services.weatherStationCrops.js"></script>
+
+    @*<script src="~/fusionCharts/js/fusioncharts.charts.js"></script>
+        <script src="~/fusionCharts/js/fusioncharts.gantt.js"></script>*@
+    <script src="~/fusionCharts/js/fusioncharts.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.maps.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.powercharts.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.ssgrid.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.treemap.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.widgets.js"></script>
+    <script src="~/fusionCharts/js/fusioncharts.zoomscatter.js"></script>
+    <script src="~/fusionCharts/js/themes/fusioncharts.theme.zune.js"></script>
+    <script src="~/fusionCharts/maps/fusioncharts.morocco.js"></script>
+    <script src="~/fusionCharts/js/angular-fusioncharts.min.js"></script>
+    <script src="~/Scripts/coldRoom.services.user.js"></script>
+
+    <script type="text/javascript">
+
+        (function () {
+            "use strict";
+            angular.module("app").factory("userService", UserServiceFactory);
+            function UserServiceFactory() {
+                var aUserServiceObject = coldroom.services.user;
+                console.log("User Service created successfully");
+                return aUserServiceObject;
+            }
+        })();
+
+        (function () {
+
+            "use strict"
+
+            angular.module("app").controller("cropController", CropController);
+
+            CropController.$inject = ["$log", "$scope"];
+
+            function CropController($log, $scope) {
+
+                var vm = this;
+                vm.$log = $log;
+                vm.$scope = $scope;
+                vm.prepData = _prepData;
+                vm.setCropName = _setCropName;
+
+
+                coldroom.page.cropId = @Model.Item1;
+                coldroom.page.zoneId = @Model.Item2;
+                coldroom.page.stationId = @Model.Item3;
+
+                vm.cropNames = {
+                    1: "Rain-fed wheat",
+                    2: "Rain-fed barley",
+                    3: "Irrigated wheat"
+                }
+
+
+
+                render();
+                function render() {
+
+                    //load dummy data for race issues
+                    vm.barGraph = {
+                        chart: {
+                            subCaption: "In this zone",
+                            xAxisName: "City",
+                            yAxisName: "Metric Tons",
+                            theme: "zune"
+                        },
+                        data: [{
+                            label: "NadorArwi",
+                            value: "0.694"
+                        }, {
+                            label: "Marrackech",
+                            value: "0.961684"
+                        }]
+                    }
+
+
+
+                    coldroom.services.weatherStationCrops.getYield(coldroom.page.stationId, coldroom.page.cropId, _onGetYieldSuccess, _onGetYieldError);
+
+                    vm.setCropName(coldroom.page.cropId);
+
+                }
+
+                function _setCropName (cropId){
+                    vm.cropName = vm.cropNames[cropId];
+                }
+
+                function _prepData (myData, otherData) {
+
+                    var myLocation = myData.LocationName;
+
+                    var obj = {
+                        chart: {
+                            subCaption: "Crop yields across similar agricultural zones in Morocco (your data is top bar)",
+                            xAxisName: "City",
+                            yAxisName: "Tons per harvested hectare",
+                            theme: "zune"
+                        },
+                        data: [
+                            {
+                                label: myData.LocationName,
+                                value: myData.Yield
+                            }
+                        ]
+                    }
+
+                    for (var i = 0; i < otherData.length; i++) {
+
+                        obj.data[i + 1] = {                         
+
+                            label: otherData[i].LocationName,
+                            value: otherData[i].Yield
+                        }
+                    }
+
+                    for (var k = 1; k < obj.data.length; k++){
+                        if(myLocation == obj.data[k].label){
+                            
+                            obj.data.splice(k, 1);
+                            break;
+                        }
+                    }
+
+                    return obj;
+                }
+
+                function _onGetYieldSuccess(data){
+
+                    vm.$log.debug("my yields: ", data);
+
+                    vm.$scope.$apply(function(){
+                        vm.myYield = data.Item;
+                    });
+
+                    coldroom.services.weatherStationCrops.getYields(coldroom.page.zoneId, coldroom.page.cropId, _onGetYieldsSuccess, _onGetYieldsError);
+
+                }
+
+                function _onGetYieldError() {
+                    console.log("error getting yield");
+                }
+
+                function _onGetYieldsSuccess(data){
+                    vm.$log.debug("farmer yields: ",  data);
+
+                    vm.$scope.$apply(function(){
+                        vm.otherYields = data.Items;
+
+                        vm.graphData = vm.prepData(vm.myYield, vm.otherYields);
+                        vm.$log.debug("graphData: ", vm.graphData);
+
+                        vm.barGraph = vm.graphData;
+
+                    });
+
+                }
+
+
+                function _onGetYieldsError() {
+                    console.log("error getting yields plural");
+                }
+
+                vm.mapGraph = {
+                    "chart": {
+                        "caption": "Crop yields",
+                        "theme": "zune",
+                        "formatNumberScale": "0",
+                        "numberSuffix": "M"
+                    },
+                    "colorrange": {
+                        "color": [
+                            {
+                                "minvalue": "0",
+                                "maxvalue": "1",
+                                "code": "#ffff99",
+                                "displayValue": "< 100M"
+                            },
+                            {
+                                "minvalue": "1",
+                                "maxvalue": "1.3",
+                                "code": "#ffd633",
+                                "displayValue": "100-500M"
+                            },
+                            {
+                                "minvalue": "1.3",
+                                "maxvalue": "1.7",
+                                "code": "#ffad33",
+                                "displayValue": "500M-1B"
+                            },
+                            {
+                                "minvalue": "1.7",
+                                "maxvalue": "4",
+                                "code": "#ff531a",
+                                "displayValue": "> 1B"
+                            },
+                             {
+                                 "minvalue": "4",
+                                 "maxvalue": "5",
+                                 "code": "#cc4400",
+                                 "displayValue": "> 1B"
+                             }
+
+                        ]
+                    },
+                    "data": [
+                         {
+                            "id": "MA.CO",
+                             "value": "10",
+                             "displayValue": "Moderate",
+                             "stationId": "7"
+                         },
+                         {
+                             "id": "MA.DA",
+                                "value": "20",
+                                "displayValue": "Moderate",
+                                "stationId": "8"
+                         },
+                         {
+                             "id": "MA.FB",
+                             "value": "215",
+                             "displayValue": "Moderate",
+                             "stationId": "3"
+                         },
+                         {
+                             "id": "MA.GB",
+                             "value": "3105",
+                             "displayValue": "Moderate",
+                             "stationId": "5"
+                         },
+                         {
+                             "id": "MA.GC",
+                             "value": "415",
+                             "displayValue": "Moderate",
+                             "stationId": "7"
+                         },
+                         {
+                             "id": "MA.GE",
+                             "value": "515",
+                             "displayValue": "Moderate",
+                             "stationId": "1"
+                         },
+                         {
+                             "id": "MA.LB",
+                             "value": "5015",
+                             "displayValue": "Moderate",
+                             "stationId": "1"
+                         },
+                         {
+                             "id": "MA.MK",
+                             "value": "30",
+                             "displayValue": "Moderate",
+                             "stationId": "4"
+                         },
+                         {
+                             "id": "MA.MT",
+                             "value": "715",
+                             "displayValue": "Moderate",
+                             "stationId": "3"
+                         },
+                         {
+                             "id": "MA.OR",
+                             "value": "8015",
+                             "displayValue": "Moderate",
+                             "stationId": "6"
+                         },
+                         {
+                             "id": "MA.OL",
+                             "value": "40",
+                             "displayValue": "Moderate",
+                             "stationId": "1"
+                         },
+                         {
+                             "id": "MA.RZ",
+                             "value": "815",
+                             "displayValue": "Moderate",
+                             "stationId": "3"
+                         },
+                         {
+                             "id": "MA.SM",
+                             "value": "715",
+                             "displayValue": "Moderate",
+                             "stationId": "1"
+                         },
+                         {
+                             "id": "MA.TD",
+                             "value": "615",
+                             "displayValue": "Moderate",
+                             "stationId": "2"
+                         },
+                         {
+                             "id": "MA.TO",
+                             "value": "415",
+                             "displayValue": "Moderate",
+                             "stationId": "9"
+                         },
+                         {
+                             "id": "MA.TH",
+                             "value": "50",
+                             "displayValue": "Moderate",
+                             "stationId": "6"
+                         },
+                    ]
+
+                };
+            }
+
+        }());
+
+        (function () {
+            "use strict";
+            angular.module("app").controller('userController', UserController);
+            UserController.$inject = ['$scope', 'userService'];
+            function UserController($scope, userService) {
+                var vm = this;
+                vm.$scope = $scope;
+                vm.userService = userService;
+                vm.items = [];
+
+                renderFarmers();
+                function renderFarmers() {
+                    vm.userService.getSimilarUsers(coldroom.page.cropId, coldroom.page.zoneId, _onGetSimilarUsersSuccess, _onGetSimilarUsersError);
+                }
+
+                function _onGetSimilarUsersSuccess(data) {
+                    vm.$scope.$apply(
+                        vm.items = data.Items
+                        );
+                    console.log(vm.items);
+                }
+
+                function _onGetSimilarUsersError() {
+                    console.log("could not get similar users");
+                }
+            }
+        })();
+
+    </script>
+
+}
+
+
+
+
